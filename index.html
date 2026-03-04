@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snow Mind — Avalanche DeFi Market Research</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text2: #8b949e;
+    --accent: #58a6ff;
+    --avax: #e84142;
+    --green: #3fb950;
+    --yellow: #d29922;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+header {
+    text-align: center;
+    padding: 48px 24px 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 32px;
+}
+header h1 {
+    font-size: 2rem;
+    background: linear-gradient(135deg, var(--avax), #ff6b6b, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+}
+header .subtitle { color: var(--text2); font-size: 1.1rem; }
+header .timestamp { color: var(--text2); font-size: 0.85rem; margin-top: 12px; opacity: 0.7; }
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 40px;
+}
+.summary-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}
+.summary-card .label { font-size: 0.8rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; }
+.summary-card .value { font-size: 1.6rem; font-weight: 700; margin-top: 6px; }
+.summary-card .value.avax { color: var(--avax); }
+.summary-card .value.green { color: var(--green); }
+.summary-card .value.blue { color: var(--accent); }
+.summary-card .value.yellow { color: var(--yellow); }
+
+section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 28px;
+}
+section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+section h2 .icon { font-size: 1.1rem; }
+section .insight {
+    color: var(--text2);
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    border-left: 3px solid var(--avax);
+    padding-left: 12px;
+}
+.chart-wrap { position: relative; width: 100%; max-height: 420px; }
+.chart-wrap canvas { width: 100% !important; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+th, td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+th {
+    color: var(--text2);
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+tr:hover { background: rgba(88,166,255,0.04); }
+.target-row { background: rgba(232,65,66,0.08); }
+.target-row:hover { background: rgba(232,65,66,0.14); }
+.badge {
+    display: inline-block;
+    font-size: 0.65rem;
+    background: var(--avax);
+    color: #fff;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+    font-weight: 600;
+}
+.desc-cell { max-width: 320px; font-size: 0.82rem; color: var(--text2); }
+.empty-msg {
+    text-align: center;
+    color: var(--green);
+    padding: 24px;
+    font-style: italic;
+}
+
+.takeaways { padding: 0; }
+.takeaways ul { list-style: none; padding: 0; }
+.takeaways li {
+    padding: 14px 18px;
+    border-left: 3px solid var(--avax);
+    margin-bottom: 12px;
+    background: rgba(232,65,66,0.05);
+    border-radius: 0 8px 8px 0;
+    line-height: 1.7;
+}
+.takeaways li strong { color: var(--accent); }
+
+footer {
+    text-align: center;
+    padding: 32px;
+    color: var(--text2);
+    font-size: 0.8rem;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>Snow Mind — Avalanche DeFi Market Research</h1>
+    <p class="subtitle">How big is the market opportunity for an autonomous yield optimizer on Avalanche?</p>
+    <p class="timestamp">Data fetched from DefiLlama on 2026-03-04 22:59 UTC</p>
+</header>
+
+<!-- ═══ Summary Cards ═══ -->
+<div class="summary-grid">
+    <div class="summary-card">
+        <div class="label">Avalanche DeFi TVL</div>
+        <div class="value avax">$835.05M</div>
+    </div>
+    <div class="summary-card">
+        <div class="label">Stablecoin Supply</div>
+        <div class="value green">$1.79B</div>
+    </div>
+    <div class="summary-card">
+        <div class="label">Lending TVL (Avalanche)</div>
+        <div class="value blue">$659.50M</div>
+    </div>
+    <div class="summary-card">
+        <div class="label">Lending Protocols</div>
+        <div class="value yellow">32</div>
+    </div>
+    <div class="summary-card">
+        <div class="label">Largest Competitor TVL</div>
+        <div class="value">$9.70M</div>
+    </div>
+</div>
+
+<!-- ═══ 1. Avalanche TVL Trend ═══ -->
+<section>
+    <h2><span class="icon">📈</span> Avalanche DeFi TVL Trend</h2>
+    <p class="insight">Tracks the total capital locked in DeFi on Avalanche over the past 12 months.
+    A growing TVL signals expanding opportunity for yield optimisation — more capital means more
+    yield to capture and redistribute.</p>
+    <div class="chart-wrap"><canvas id="tvlChart"></canvas></div>
+</section>
+
+<!-- ═══ 2. Lending Protocol TVLs ═══ -->
+<section>
+    <h2><span class="icon">🏦</span> Avalanche Lending Protocol TVLs</h2>
+    <p class="insight">These are the lending protocols Snow Mind would optimise across.
+    Highlighted rows are Snow Mind's primary target protocols (Benqi, Aave V3, Euler, Fluid).
+    A fragmented lending landscape with multiple viable protocols is ideal for an automated optimizer.</p>
+    <div style="overflow-x:auto">
+    <table>
+        <thead><tr>
+            <th>#</th><th>Protocol</th><th>Total TVL</th><th>Avalanche TVL</th><th>1d Chg</th><th>7d Chg</th>
+        </tr></thead>
+        <tbody><tr class="target-row">
+            <td>1</td>
+            <td>Aave V3 <span class="badge">Target</span></td>
+            <td>$27.58B</td>
+            <td>$453.00M</td>
+            <td>+5.63%</td>
+            <td>+1.63%</td>
+        </tr>
+<tr class="target-row">
+            <td>2</td>
+            <td>Benqi Lending <span class="badge">Target</span></td>
+            <td>$147.91M</td>
+            <td>$147.91M</td>
+            <td>+4.49%</td>
+            <td>-4.41%</td>
+        </tr>
+<tr class="target-row">
+            <td>3</td>
+            <td>Euler V2 <span class="badge">Target</span></td>
+            <td>$483.20M</td>
+            <td>$18.26M</td>
+            <td>-1.19%</td>
+            <td>-3.73%</td>
+        </tr>
+<tr class="target-row">
+            <td>4</td>
+            <td>Aave V2 <span class="badge">Target</span></td>
+            <td>$141.11M</td>
+            <td>$12.93M</td>
+            <td>+5.05%</td>
+            <td>+2.49%</td>
+        </tr>
+<tr>
+            <td>5</td>
+            <td>Folks Finance xChain</td>
+            <td>$13.85M</td>
+            <td>$11.02M</td>
+            <td>-4.06%</td>
+            <td>-9.50%</td>
+        </tr>
+<tr>
+            <td>6</td>
+            <td>Silo V2</td>
+            <td>$47.60M</td>
+            <td>$9.60M</td>
+            <td>+2.44%</td>
+            <td>-5.26%</td>
+        </tr>
+<tr>
+            <td>7</td>
+            <td>40 Acres</td>
+            <td>$25.40M</td>
+            <td>$3.97M</td>
+            <td>+6.49%</td>
+            <td>-1.71%</td>
+        </tr>
+<tr>
+            <td>8</td>
+            <td>Joe Lend</td>
+            <td>$2.47M</td>
+            <td>$2.47M</td>
+            <td>+2.02%</td>
+            <td>+0.62%</td>
+        </tr>
+<tr>
+            <td>9</td>
+            <td>TermFinance Lend</td>
+            <td>$2.05M</td>
+            <td>—</td>
+            <td>+8.54%</td>
+            <td>+52.99%</td>
+        </tr>
+<tr>
+            <td>10</td>
+            <td>dForce Lending</td>
+            <td>$1.04M</td>
+            <td>—</td>
+            <td>+0.13%</td>
+            <td>+0.20%</td>
+        </tr>
+<tr>
+            <td>11</td>
+            <td>Impermax V2</td>
+            <td>$795.9K</td>
+            <td>$94.5K</td>
+            <td>-1.38%</td>
+            <td>-8.74%</td>
+        </tr>
+<tr>
+            <td>12</td>
+            <td>Nereus Finance</td>
+            <td>$80.9K</td>
+            <td>$80.9K</td>
+            <td>+7.11%</td>
+            <td>+6.91%</td>
+        </tr>
+<tr>
+            <td>13</td>
+            <td>Iron Bank</td>
+            <td>$223.6K</td>
+            <td>$57.5K</td>
+            <td>+3.27%</td>
+            <td>-0.42%</td>
+        </tr>
+<tr>
+            <td>14</td>
+            <td>Prime Protocol</td>
+            <td>$391.9K</td>
+            <td>$33.9K</td>
+            <td>+3.70%</td>
+            <td>+0.98%</td>
+        </tr>
+<tr>
+            <td>15</td>
+            <td>Vee Finance</td>
+            <td>$13.2K</td>
+            <td>$13.2K</td>
+            <td>+1.06%</td>
+            <td>+0.55%</td>
+        </tr>
+<tr>
+            <td>16</td>
+            <td>Beta Finance V1</td>
+            <td>$535.3K</td>
+            <td>$11.6K</td>
+            <td>+2.95%</td>
+            <td>+0.99%</td>
+        </tr>
+<tr>
+            <td>17</td>
+            <td>OrcaDAO</td>
+            <td>$9.9K</td>
+            <td>$9.9K</td>
+            <td>+1.56%</td>
+            <td>+0.09%</td>
+        </tr>
+<tr>
+            <td>18</td>
+            <td>Ploutos Money</td>
+            <td>$14.1K</td>
+            <td>$8.5K</td>
+            <td>+3.04%</td>
+            <td>-99.55%</td>
+        </tr>
+<tr>
+            <td>19</td>
+            <td>Moremoney</td>
+            <td>$7.5K</td>
+            <td>$7.5K</td>
+            <td>-0.01%</td>
+            <td>-0.02%</td>
+        </tr>
+<tr>
+            <td>20</td>
+            <td>Tarot</td>
+            <td>$609.5K</td>
+            <td>$7.2K</td>
+            <td>+3.88%</td>
+            <td>+0.03%</td>
+        </tr>
+<tr>
+            <td>21</td>
+            <td>StackFi</td>
+            <td>$3.1K</td>
+            <td>$3.0K</td>
+            <td>+3.05%</td>
+            <td>+0.17%</td>
+        </tr>
+<tr>
+            <td>22</td>
+            <td>Atlantis Loans</td>
+            <td>$2.9K</td>
+            <td>$2.8K</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>23</td>
+            <td>Granary Finance</td>
+            <td>$164.4K</td>
+            <td>$2.7K</td>
+            <td>+3.06%</td>
+            <td>+2.18%</td>
+        </tr>
+<tr>
+            <td>24</td>
+            <td>BiFi</td>
+            <td>$8.48M</td>
+            <td>$2.3K</td>
+            <td>+2.76%</td>
+            <td>-3.53%</td>
+        </tr>
+<tr>
+            <td>25</td>
+            <td>Sushi Kashi</td>
+            <td>$142.3K</td>
+            <td>$1.4K</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>26</td>
+            <td>Secured Finance Lending</td>
+            <td>$468.1K</td>
+            <td>$207.03</td>
+            <td>+1.79%</td>
+            <td>-0.89%</td>
+        </tr>
+<tr>
+            <td>27</td>
+            <td>Augmented Finance</td>
+            <td>$326.65</td>
+            <td>$164.85</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>28</td>
+            <td>Ajna V2</td>
+            <td>$577.0K</td>
+            <td>$111.74</td>
+            <td>+2.18%</td>
+            <td>+1.03%</td>
+        </tr>
+<tr>
+            <td>29</td>
+            <td>88mph</td>
+            <td>$400.6K</td>
+            <td>$55.28</td>
+            <td>+1.25%</td>
+            <td>-0.29%</td>
+        </tr>
+<tr>
+            <td>30</td>
+            <td>OmniBTC</td>
+            <td>$1.99M</td>
+            <td>$0.00</td>
+            <td>+3.74%</td>
+            <td>-1.75%</td>
+        </tr>
+<tr>
+            <td>31</td>
+            <td>Anchor</td>
+            <td>$0.00</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>32</td>
+            <td>Blizz Finance</td>
+            <td>$0.00</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+        </tr>
+</tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ═══ 3. Stablecoin Supply ═══ -->
+<section>
+    <h2><span class="icon">💵</span> Stablecoin Supply on Avalanche Over Time</h2>
+    <p class="insight">Stablecoins are the primary asset deposited into lending protocols.
+    This chart shows how much stablecoin capital exists on Avalanche that COULD be deposited
+    into lending protocols — representing Snow Mind's total addressable market for stable-yield strategies.</p>
+    <div class="chart-wrap"><canvas id="scChart"></canvas></div>
+</section>
+
+<!-- ═══ 4. Stablecoin Composition ═══ -->
+<section>
+    <h2><span class="icon">🥧</span> Stablecoin Composition on Avalanche</h2>
+    <p class="insight">Understanding which stablecoins dominate Avalanche helps Snow Mind prioritise
+    which assets to support first. USDC and USDT strategies should be the initial focus given their
+    liquidity and lending-pool availability.</p>
+    <div class="chart-wrap" style="max-width:480px;margin:0 auto"><canvas id="pieChart"></canvas></div>
+</section>
+
+<!-- ═══ 5. Competitor Comparison ═══ -->
+<section>
+    <h2><span class="icon">⚔️</span> Yield Optimizer Competitor TVL Comparison</h2>
+    <p class="insight">Tracking competitors (Giza, ZyfAI, Almanak) reveals market maturity.
+    Absent or minimal competitor TVL on DefiLlama signals an early-stage market where Snow Mind
+    can establish dominance before others scale.</p>
+    <div style="overflow-x:auto">
+    <table>
+        <thead><tr>
+            <th>Protocol</th><th>TVL</th><th>Chains</th><th>Description</th>
+        </tr></thead>
+        <tbody><tr>
+                <td>Giza</td>
+                <td>$9.70M</td>
+                <td>Plasma, Hyperliquid L1, Arbitrum, Base</td>
+                <td class="desc-cell">Giza is the infrastructure powering autonomous financial markets by enabling non-custodial algorithmic agents that execute sophisticated DeFi strategies around the clock</td>
+            </tr>
+<tr>
+                <td>ZyFAI</td>
+                <td>$7.34M</td>
+                <td>Plasma, Arbitrum, Base, Sonic</td>
+                <td class="desc-cell">ZyFAI is a DeFi Agent built to optimize DeFi yields with real-time data and automated on-chain actions</td>
+            </tr>
+<tr>
+                <td>Almanak</td>
+                <td>$1.69M</td>
+                <td>Base, Ethereum</td>
+                <td class="desc-cell">Almanak is an innovative DeFi Agent Platform designed to create and deploy automated financial strategies using financial Agents. The platform combines advanced automation with emerging AI technologie</td>
+            </tr>
+</tbody>
+    </table>
+    </div>
+    <div class='chart-wrap' style='margin-top:20px'><canvas id='compChart'></canvas></div>
+</section>
+
+<!-- ═══ 6. Lending Fee Revenue ═══ -->
+<section>
+    <h2><span class="icon">💰</span> Avalanche Lending Protocol Fee Revenue</h2>
+    <p class="insight">Fee revenue represents the yield generated by lending protocols and distributed
+    to depositors. This is the yield pool that Snow Mind would optimise across — higher fees mean
+    more reward for smart allocation.</p>
+    <div style="overflow-x:auto">
+    <table>
+        <thead><tr>
+            <th>#</th><th>Protocol</th><th>24h Fees</th><th>7d Fees</th><th>1d Chg</th>
+        </tr></thead>
+        <tbody><tr>
+            <td>1</td>
+            <td>Aave V3</td>
+            <td>$25.4K</td>
+            <td>$172.5K</td>
+            <td>+4.68%</td>
+        </tr>
+<tr>
+            <td>2</td>
+            <td>Euler V2</td>
+            <td>$15.5K</td>
+            <td>$109.5K</td>
+            <td>-0.12%</td>
+        </tr>
+<tr>
+            <td>3</td>
+            <td>Benqi Lending</td>
+            <td>$14.3K</td>
+            <td>$81.7K</td>
+            <td>+3.07%</td>
+        </tr>
+<tr>
+            <td>4</td>
+            <td>Silo V2</td>
+            <td>$753.00</td>
+            <td>$7.5K</td>
+            <td>-24.09%</td>
+        </tr>
+<tr>
+            <td>5</td>
+            <td>Aave V2</td>
+            <td>$363.00</td>
+            <td>$14.0K</td>
+            <td>-89.74%</td>
+        </tr>
+<tr>
+            <td>6</td>
+            <td>40 Acres</td>
+            <td>$242.00</td>
+            <td>$7.0K</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>7</td>
+            <td>Joe Lend</td>
+            <td>$172.00</td>
+            <td>$549.00</td>
+            <td>-37.91%</td>
+        </tr>
+<tr>
+            <td>8</td>
+            <td>Impermax V2</td>
+            <td>$0.00</td>
+            <td>$0.00</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>9</td>
+            <td>Abracadabra Spell</td>
+            <td>$0.00</td>
+            <td>$0.00</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>10</td>
+            <td>QiDao</td>
+            <td>$0.00</td>
+            <td>$0.00</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>11</td>
+            <td>Teddy Cash</td>
+            <td>$0.00</td>
+            <td>$0.00</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>12</td>
+            <td>Angle</td>
+            <td>$0.00</td>
+            <td>$0.00</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>13</td>
+            <td>Iron Bank</td>
+            <td>$0.00</td>
+            <td>$18.00</td>
+            <td>—</td>
+        </tr>
+<tr>
+            <td>14</td>
+            <td>Ajna V2</td>
+            <td>$0.00</td>
+            <td>$0.00</td>
+            <td>—</td>
+        </tr>
+</tbody>
+    </table>
+    </div>
+</section>
+
+<!-- ═══ 7. Chain TVL Comparison ═══ -->
+<section>
+    <h2><span class="icon">🌐</span> Avalanche's Position in DeFi by Chain TVL</h2>
+    <p class="insight">Contextualises Avalanche within the broader DeFi landscape.
+    Avalanche is a top-tier chain with meaningful TVL — large enough to matter, but with less
+    competition for yield-optimisation tooling compared to Ethereum or Arbitrum.</p>
+    <div class="chart-wrap"><canvas id="chainChart"></canvas></div>
+</section>
+
+<!-- ═══ Key Takeaways ═══ -->
+<section class="takeaways">
+    <h2><span class="icon">🎯</span> Key Takeaways</h2>
+    <ul><li>Avalanche DeFi TVL stands at <strong>$835.05M</strong>, ranking <strong>#12</strong> among all chains — a mature but not saturated ecosystem.</li>
+<li><strong>$1.79B</strong> in stablecoins sit on Avalanche, but only <strong>$659.50M</strong> (36.9%) is deployed in lending protocols. The gap represents idle capital that an autonomous optimizer could activate.</li>
+<li>Avalanche lending protocols generate an estimated <strong>$20.71M/year</strong> in fees — the yield pool that Snow Mind would optimise across.</li>
+<li><strong>32</strong> lending protocols operate on Avalanche, creating the fragmentation that makes manual yield management impractical and automated rebalancing valuable.</li>
+<li>The largest identified competitor has only <strong>$9.70M</strong> in TVL — the market is early-stage with room to capture significant share.</li></ul>
+</section>
+
+</div>
+
+<footer>
+    Snow Mind Market Research &middot; Data sourced from <a href="https://defillama.com" style="color:var(--accent)">DefiLlama</a>
+    &middot; Generated 2026-03-04 22:59 UTC
+</footer>
+
+<script>
+const GRID_COLOR = 'rgba(255,255,255,0.06)';
+const TICK_COLOR = '#8b949e';
+Chart.defaults.color = TICK_COLOR;
+Chart.defaults.borderColor = GRID_COLOR;
+
+// 1. TVL Trend
+new Chart(document.getElementById('tvlChart'), {
+    type: 'line',
+    data: {
+        labels: ["Mar '25", "Mar '25", "Mar '25", "Mar '25", "Apr '25", "Apr '25", "Apr '25", "Apr '25", "Apr '25", "May '25", "May '25", "May '25", "May '25", "Jun '25", "Jun '25", "Jun '25", "Jun '25", "Jul '25", "Jul '25", "Jul '25", "Jul '25", "Jul '25", "Aug '25", "Aug '25", "Aug '25", "Aug '25", "Sep '25", "Sep '25", "Sep '25", "Sep '25", "Oct '25", "Oct '25", "Oct '25", "Oct '25", "Oct '25", "Nov '25", "Nov '25", "Nov '25", "Nov '25", "Dec '25", "Dec '25", "Dec '25", "Dec '25", "Dec '25", "Jan '26", "Jan '26", "Jan '26", "Jan '26", "Feb '26", "Feb '26", "Feb '26", "Feb '26", "Mar '26"],
+        datasets: [{
+            label: 'Avalanche TVL ($M)',
+            data: [1083.29, 1060.15, 1104.54, 1230.17, 1162.75, 1043.12, 1205.04, 1288.75, 1298.0, 1318.8, 1537.1, 1492.69, 1545.56, 1492.09, 1574.66, 1439.07, 1482.08, 1458.17, 1511.53, 1678.11, 1944.11, 1944.92, 1872.28, 1978.34, 1866.64, 1950.17, 1937.42, 1934.73, 2097.6, 2233.55, 2182.62, 2154.71, 1882.55, 1850.24, 1913.97, 1551.41, 1401.45, 1288.43, 1228.4, 1242.22, 1306.73, 1198.27, 1159.72, 1168.4, 1261.4, 1235.01, 1095.25, 1074.57, 912.86, 827.54, 826.53, 773.3, 835.05],
+            borderColor: '#e84142',
+            backgroundColor: 'rgba(232,65,66,0.10)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0,
+            borderWidth: 2,
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.y.toLocaleString() + 'M' } }
+        },
+        scales: {
+            y: { ticks: { callback: v => '$' + v + 'M' }, grid: { color: GRID_COLOR } },
+            x: { ticks: { maxTicksLimit: 12 }, grid: { display: false } }
+        }
+    }
+});
+
+// 3. Stablecoin Supply
+new Chart(document.getElementById('scChart'), {
+    type: 'line',
+    data: {
+        labels: ["Mar '25", "Mar '25", "Mar '25", "Mar '25", "Apr '25", "Apr '25", "Apr '25", "Apr '25", "Apr '25", "May '25", "May '25", "May '25", "May '25", "Jun '25", "Jun '25", "Jun '25", "Jun '25", "Jul '25", "Jul '25", "Jul '25", "Jul '25", "Jul '25", "Aug '25", "Aug '25", "Aug '25", "Aug '25", "Sep '25", "Sep '25", "Sep '25", "Sep '25", "Oct '25", "Oct '25", "Oct '25", "Oct '25", "Oct '25", "Nov '25", "Nov '25", "Nov '25", "Nov '25", "Dec '25", "Dec '25", "Dec '25", "Dec '25", "Dec '25", "Jan '26", "Jan '26", "Jan '26", "Jan '26", "Feb '26", "Feb '26", "Feb '26", "Feb '26", "Mar '26"],
+        datasets: [{
+            label: 'Stablecoin Supply ($M)',
+            data: [1681.53, 1846.04, 1803.04, 1911.3, 1929.09, 1617.36, 1748.82, 1724.71, 1703.69, 1830.95, 1763.83, 1814.63, 1829.96, 2042.14, 1816.68, 1277.22, 1335.74, 1578.65, 1597.26, 1628.78, 1659.33, 1699.61, 1658.78, 1703.99, 1739.2, 1976.39, 2280.33, 2314.53, 2228.15, 2204.4, 1774.87, 2055.44, 2021.4, 1918.16, 2493.45, 2409.44, 2327.19, 2282.83, 2033.97, 1750.07, 1798.38, 1727.23, 1697.1, 1752.95, 1745.08, 1796.72, 1796.11, 1829.62, 1857.96, 1846.18, 1892.47, 1775.7, 1786.42],
+            borderColor: '#3fb950',
+            backgroundColor: 'rgba(63,185,80,0.10)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0,
+            borderWidth: 2,
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.y.toLocaleString() + 'M' } }
+        },
+        scales: {
+            y: { ticks: { callback: v => '$' + v + 'M' }, grid: { color: GRID_COLOR } },
+            x: { ticks: { maxTicksLimit: 12 }, grid: { display: false } }
+        }
+    }
+});
+
+// 4. Stablecoin Pie
+new Chart(document.getElementById('pieChart'), {
+    type: 'doughnut',
+    data: {
+        labels: ["USDT", "USDC", "avUSD", "BUIDL", "USP", "Others"],
+        datasets: [{
+            data: [884.97, 627.57, 112.29, 82.37, 65.44, 117.85],
+            backgroundColor: ['#2775CA','#26A17B','#F5AC37','#8b5cf6','#ec4899','#6b7280'],
+            borderColor: '#161b22',
+            borderWidth: 2,
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: 'right', labels: { padding: 16 } },
+            tooltip: { callbacks: { label: ctx => ctx.label + ': $' + ctx.parsed.toLocaleString() + 'M' } }
+        }
+    }
+});
+
+// 5. Competitor Chart
+(function() {
+    var el = document.getElementById('compChart');
+    if (!el) return;
+    var ds = [{"label": "Giza", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 24.08, 25.88, 29.1, 28.37, 21.7, 24.09, 22.68, 25.0, 31.62, 32.74, 32.9, 35.96, 38.64, 43.64, 44.23, 37.25, 27.55, 21.22, 20.75, 20.68, 21.0, 0.0], "borderColor": "#f59e0b", "backgroundColor": "#f59e0b33", "fill": true, "tension": 0.3}, {"label": "ZyFAI", "data": [0.0, 0.05, 0.09, 0.1, 0.12, 0.19, 0.21, 0.34, 0.43, 0.98, 1.17, 1.87, 1.92, 2.33, 1.64, 2.57, 4.21, 4.19, 4.6, 4.55, 5.68, 5.74, 5.85, 6.87, 7.62, 7.67, 8.35, 8.44, 8.23, 9.05, 8.56, 8.32, 8.42, 8.22, 8.11, 10.17, 10.28, 10.48, 10.45, 10.58, 0.0, 9.02, 7.54, 7.35, 7.27, 7.34], "borderColor": "#10b981", "backgroundColor": "#10b98133", "fill": true, "tension": 0.3}, {"label": "Almanak", "data": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.19, 0.28, 0.28, 0.36, 0.39, 5.01, 10.01, 11.21, 14.25, 19.46, 28.27, 36.29, 39.25, 44.99, 64.59, 82.03, 103.95, 158.82, 160.18, 165.79, 142.65, 113.5, 111.52, 128.14, 129.36, 132.1, 125.83, 11.84, 7.07, 4.73, 4.21, 3.96, 3.29, 2.44, 2.1, 1.83, 1.78, 1.71, 0.0], "borderColor": "#8b5cf6", "backgroundColor": "#8b5cf633", "fill": true, "tension": 0.3}];
+    if (!ds.length) return;
+    new Chart(el, {
+        type: 'line',
+        data: { labels: ["Apr '25", "May '25", "May '25", "May '25", "May '25", "May '25", "Jun '25", "Jun '25", "Jun '25", "Jun '25", "Jul '25", "Jul '25", "Jul '25", "Jul '25", "Jul '25", "Aug '25", "Aug '25", "Aug '25", "Aug '25", "Sep '25", "Sep '25", "Sep '25", "Sep '25", "Oct '25", "Oct '25", "Oct '25", "Oct '25", "Oct '25", "Nov '25", "Nov '25", "Nov '25", "Nov '25", "Dec '25", "Dec '25", "Dec '25", "Dec '25", "Jan '26", "Jan '26", "Jan '26", "Jan '26", "Jan '26", "Feb '26", "Feb '26", "Feb '26", "Feb '26", "Mar '26"], datasets: ds },
+        options: {
+            responsive: true,
+            plugins: {
+                tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.parsed.y.toLocaleString() + 'M' } }
+            },
+            scales: {
+                y: { ticks: { callback: v => '$' + v + 'M' }, grid: { color: GRID_COLOR } },
+                x: { ticks: { maxTicksLimit: 12 }, grid: { display: false } }
+            }
+        }
+    });
+})();
+
+// 7. Chain TVL Bar
+new Chart(document.getElementById('chainChart'), {
+    type: 'bar',
+    data: {
+        labels: ["Ethereum", "Solana", "BSC", "Bitcoin", "Base", "Tron", "Plasma", "Arbitrum", "Hyperliquid L1", "Provenance", "Polygon", "Avalanche", "Mantle", "Sui", "Katana"],
+        datasets: [{
+            label: 'Chain TVL ($B)',
+            data: [56.28, 6.95, 5.88, 4.79, 4.2, 4.17, 2.19, 2.12, 1.63, 1.51, 1.13, 0.84, 0.76, 0.63, 0.54],
+            backgroundColor: ["#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6", "#3b82f6", "#e84142", "#3b82f6", "#3b82f6", "#3b82f6"],
+            borderRadius: 4,
+        }]
+    },
+    options: {
+        responsive: true,
+        indexAxis: 'y',
+        plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => '$' + ctx.parsed.x.toLocaleString() + 'B' } }
+        },
+        scales: {
+            x: { ticks: { callback: v => '$' + v + 'B' }, grid: { color: GRID_COLOR } },
+            y: { grid: { display: false } }
+        }
+    }
+});
+</script>
+</body>
+</html>
