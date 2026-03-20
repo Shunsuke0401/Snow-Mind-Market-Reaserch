@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snow Mind — Utilization Rate Dashboard (Avalanche)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --text2: #8b949e; --accent: #58a6ff;
+    --avax: #e84142; --green: #3fb950; --yellow: #d29922;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+}
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+header { text-align: center; padding: 40px 24px 28px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+header h1 { font-size: 1.8rem; margin-bottom: 4px; }
+header h1 span { color: var(--avax); }
+header .sub { color: var(--text2); font-size: 1rem; }
+header .ts { color: var(--text2); font-size: 0.8rem; margin-top: 10px; opacity: 0.7; }
+
+.kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px; margin-bottom: 32px;
+}
+.kpi {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px; text-align: center;
+}
+.kpi .k-label { font-size: 0.75rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi .k-val { font-size: 1.5rem; font-weight: 700; margin-top: 4px; }
+
+section {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; margin-bottom: 24px;
+}
+section h2 { font-size: 1.2rem; margin-bottom: 6px; }
+section .insight {
+    color: var(--text2); font-size: 0.88rem; margin-bottom: 18px;
+    border-left: 3px solid var(--avax); padding-left: 12px;
+}
+.chart-wrap { position: relative; width: 100%; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+th, td { padding: 9px 10px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--text2); font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.tag { color: var(--text2); font-size: 0.75rem; font-style: italic; max-width: 180px; }
+tr:hover { background: rgba(88,166,255,0.04); }
+.util-high { color: var(--avax); font-weight: 700; }
+.util-mid { color: var(--yellow); font-weight: 700; }
+.util-low { color: var(--green); font-weight: 700; }
+
+.legend-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px; margin-bottom: 20px;
+}
+.legend-item {
+    display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+    background: rgba(255,255,255,0.02); border-radius: 6px;
+}
+.legend-item.dimmed { opacity: 0.5; }
+.legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.legend-name { font-weight: 600; font-size: 0.9rem; }
+.legend-tag { color: var(--text2); font-size: 0.78rem; }
+
+.note { color: var(--text2); font-size: 0.82rem; margin-top: 14px; font-style: italic; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+
+footer { text-align: center; padding: 28px; color: var(--text2); font-size: 0.78rem; }
+footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1><span>Utilization Rate</span> Dashboard — Avalanche</h1>
+    <p class="sub">Supply vs. Borrow dynamics across Snow Mind's 6 target USDC markets</p>
+    <p class="ts">Data from DefiLlama &middot; 2026-03-20 13:45 UTC</p>
+</header>
+
+<div class="kpi-grid">
+    <div class="kpi">
+        <div class="k-label">Highest Utilization</div>
+        <div class="k-val" style="color:var(--avax)">79.0%</div>
+        <div class="k-label" style="margin-top:4px">Aave V3</div>
+    </div>
+    <div class="kpi">
+        <div class="k-label">Lowest Utilization</div>
+        <div class="k-val" style="color:var(--green)">0.0%</div>
+        <div class="k-label" style="margin-top:4px">Spark</div>
+    </div>
+    <div class="kpi">
+        <div class="k-label">Average Utilization</div>
+        <div class="k-val" style="color:var(--yellow)">48.9%</div>
+        <div class="k-label" style="margin-top:4px">Across all markets</div>
+    </div>
+    <div class="kpi">
+        <div class="k-label">Total Supplied</div>
+        <div class="k-val">$130.4M</div>
+        <div class="k-label" style="margin-top:4px">6 markets combined</div>
+    </div>
+    <div class="kpi">
+        <div class="k-label">Total Borrowed</div>
+        <div class="k-val">$102.1M</div>
+        <div class="k-label" style="margin-top:4px">6 markets combined</div>
+    </div>
+</div>
+
+<div class="legend-grid"><div class="legend-item">
+                <div class="legend-dot" style="background:#9b7ddb"></div>
+                <div><div class="legend-name">Aave V3</div>
+                <div class="legend-tag">Blue chip conservative</div></div></div><div class="legend-item">
+                <div class="legend-dot" style="background:#1cc0e0"></div>
+                <div><div class="legend-name">Benqi</div>
+                <div class="legend-tag">Avalanche native conservative</div></div></div><div class="legend-item">
+                <div class="legend-dot" style="background:#f5ac37"></div>
+                <div><div class="legend-name">Spark</div>
+                <div class="legend-tag">Base-layer parking</div></div></div><div class="legend-item">
+                <div class="legend-dot" style="background:#e84142"></div>
+                <div><div class="legend-name">Euler (9Summits)</div>
+                <div class="legend-tag">Curated vault, higher yield</div></div></div><div class="legend-item">
+                <div class="legend-dot" style="background:#3fb950"></div>
+                <div><div class="legend-name">Silo (savUSD/USDC)</div>
+                <div class="legend-tag">Isolated lending, Avant collateral</div></div></div><div class="legend-item">
+                <div class="legend-dot" style="background:#58a6ff"></div>
+                <div><div class="legend-name">Silo (sUSDp/USDC)</div>
+                <div class="legend-tag">Isolated lending, Parallel collateral</div></div></div></div>
+
+<!-- Utilization Rate Chart -->
+<section>
+    <h2>Utilization Rate — Last 90 Days</h2>
+    <p class="insight">Utilization rate = Total Borrowed / Total Supplied. Higher utilization means
+    more demand for borrowing relative to deposits, which drives up both supply and borrow APY.
+    Markets near the kink point (typically 80-90%) see sharp APY increases — these transitions are
+    the highest-value rebalancing signals for Snow Mind.</p>
+    <div class="chart-wrap" style="height:420px"><canvas id="utilChart"></canvas></div>
+    <p class="note">Spark shows 0% utilization because it operates as a fixed-rate savings vault
+    (DSR) rather than a traditional borrow/lend market.</p>
+</section>
+
+<!-- Borrow APY Chart -->
+<section>
+    <h2>Borrow APY — Last 90 Days</h2>
+    <p class="insight">The cost of borrowing from each market. A higher borrow APY means borrowers
+    pay more, which flows to depositors as supply yield. When borrow APY spikes, the supply APY follows
+    — Snow Mind can front-run these moves by rebalancing into the market before rates fully adjust.</p>
+    <div class="chart-wrap" style="height:360px"><canvas id="borrowApyChart"></canvas></div>
+</section>
+
+<!-- Supply vs Borrow Volume -->
+<section>
+    <h2>Supply &amp; Borrow Volume — Last 90 Days</h2>
+    <p class="insight">Absolute capital deployed. The ratio between supply and borrow volume
+    determines utilization. Rapid borrow growth with stable supply is a bullish signal for
+    rising yields.</p>
+    <div class="grid-2">
+        <div class="chart-wrap" style="height:300px">
+            <h3 style="font-size:0.9rem;color:var(--text2);margin-bottom:8px">Total Supplied</h3>
+            <canvas id="supplyChart"></canvas>
+        </div>
+        <div class="chart-wrap" style="height:300px">
+            <h3 style="font-size:0.9rem;color:var(--text2);margin-bottom:8px">Total Borrowed</h3>
+            <canvas id="borrowChart"></canvas>
+        </div>
+    </div>
+</section>
+
+<!-- Data Table -->
+<section>
+    <h2>Market Utilization Summary</h2>
+    <p class="insight">Current state and recent averages. Red = high utilization (&gt;85%),
+    yellow = moderate (60-85%), green = low (&lt;60%). Volatility shows how unstable the
+    utilization rate has been — higher volatility = more rebalancing opportunity.</p>
+    <div style="overflow-x:auto">
+    <table>
+        <thead><tr>
+            <th>Market</th><th>Strategy</th><th>Util Now</th><th>7d Avg</th>
+            <th>30d Avg</th><th>30d Vol</th><th>Supply APY</th><th>Borrow APY</th>
+            <th>Supplied</th><th>Borrowed</th>
+        </tr></thead>
+        <tbody><tr>
+            <td><span style="color:#9b7ddb">●</span> Aave V3</td>
+            <td class="tag">Blue chip conservative</td>
+            <td class="num util-mid">79.0%</td>
+            <td class="num">76.1%</td>
+            <td class="num">69.8%</td>
+            <td class="num">4.2%</td>
+            <td class="num">2.50%</td>
+            <td class="num">3.51%</td>
+            <td class="num">$100.7M</td>
+            <td class="num">$79.6M</td>
+        </tr>
+<tr>
+            <td><span style="color:#1cc0e0">●</span> Benqi</td>
+            <td class="tag">Avalanche native conservative</td>
+            <td class="num util-mid">77.0%</td>
+            <td class="num">74.9%</td>
+            <td class="num">72.1%</td>
+            <td class="num">3.7%</td>
+            <td class="num">4.00%</td>
+            <td class="num">6.17%</td>
+            <td class="num">$25.1M</td>
+            <td class="num">$19.3M</td>
+        </tr>
+<tr>
+            <td><span style="color:#3fb950">●</span> Silo (savUSD/USDC)</td>
+            <td class="tag">Isolated lending, Avant collateral</td>
+            <td class="num util-mid">70.9%</td>
+            <td class="num">69.6%</td>
+            <td class="num">75.1%</td>
+            <td class="num">5.3%</td>
+            <td class="num">4.43%</td>
+            <td class="num">6.94%</td>
+            <td class="num">$3.0M</td>
+            <td class="num">$2.1M</td>
+        </tr>
+<tr>
+            <td><span style="color:#58a6ff">●</span> Silo (sUSDp/USDC)</td>
+            <td class="tag">Isolated lending, Parallel collateral</td>
+            <td class="num util-mid">66.3%</td>
+            <td class="num">70.4%</td>
+            <td class="num">73.3%</td>
+            <td class="num">4.7%</td>
+            <td class="num">2.98%</td>
+            <td class="num">5.00%</td>
+            <td class="num">$1.7M</td>
+            <td class="num">$1.1M</td>
+        </tr>
+<tr>
+            <td><span style="color:#f5ac37">●</span> Spark</td>
+            <td class="tag">Base-layer parking</td>
+            <td class="num util-low">0.0%</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0%</td>
+            <td class="num">3.75%</td>
+            <td class="num">0.00%</td>
+            <td class="num">$0</td>
+            <td class="num">$0</td>
+        </tr>
+<tr>
+            <td><span style="color:#e84142">●</span> Euler (9Summits)</td>
+            <td class="tag">Curated vault, higher yield</td>
+            <td class="num util-low">0.0%</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0%</td>
+            <td class="num">0.0%</td>
+            <td class="num">6.83%</td>
+            <td class="num">0.00%</td>
+            <td class="num">$0</td>
+            <td class="num">$0</td>
+        </tr>
+</tbody>
+    </table>
+    </div>
+</section>
+
+</div>
+
+<footer>
+    Snow Mind Market Research &middot; Data from <a href="https://defillama.com">DefiLlama</a>
+    &middot; Generated 2026-03-20 13:45 UTC
+</footer>
+
+<script>
+const GRID = 'rgba(255,255,255,0.06)';
+Chart.defaults.color = '#8b949e';
+Chart.defaults.borderColor = GRID;
+const labels = ["12-20", "12-21", "12-22", "12-23", "12-24", "12-25", "12-26", "12-27", "12-28", "12-29", "12-30", "12-31", "01-01", "01-02", "01-03", "01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10", "01-11", "01-12", "01-13", "01-14", "01-15", "01-16", "01-17", "01-18", "01-19", "01-20", "01-21", "01-22", "01-23", "01-24", "01-25", "01-26", "01-27", "01-28", "01-29", "01-30", "01-31", "02-01", "02-02", "02-03", "02-04", "02-05", "02-06", "02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20", "02-21", "02-22", "02-23", "02-24", "02-25", "02-26", "02-27", "02-28", "03-01", "03-02", "03-03", "03-04", "03-05", "03-06", "03-07", "03-08", "03-09", "03-10", "03-11", "03-12", "03-13", "03-14", "03-15", "03-16", "03-17", "03-18", "03-19", "03-20"];
+const legendOpts = { display: true, position: 'top', labels: { usePointStyle: true, pointStyle: 'line', padding: 16 } };
+
+new Chart(document.getElementById('utilChart'), {
+    type: 'line',
+    data: { labels, datasets: [{"label": "Aave V3", "borderColor": "#9b7ddb", "backgroundColor": "#9b7ddb18", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [77.25, 77.66, 81.72, 81.51, 82.25, 81.8, 82.06, 82.16, 82.79, 82.13, 82.02, 82.81, 80.74, 79.5, 77.83, 78.38, 82.89, 83.42, 82.11, 82.64, 83.65, 83.62, 84.6, 89.66, 89.32, 87.69, 87.8, 87.97, 87.33, 86.09, 86.11, 88.89, 87.94, 88.37, 89.35, 89.37, 88.41, 87.02, 87.32, 88.43, 84.59, 86.51, 74.03, 74.07, 72.7, 73.02, 72.25, 70.88, 71.51, 71.57, 72.04, 73.71, 73.95, 74.08, 73.84, 73.36, 73.52, 73.22, 71.32, 70.96, 70.87, 70.5, 68.89, 69.3, 68.51, 68.62, 67.81, 66.99, 66.23, 66.14, 65.66, 65.97, 66.26, 66.0, 67.0, 66.61, 66.42, 66.61, 66.66, 67.1, 70.7, 70.84, 71.89, 72.19, 71.21, 71.44, 74.49, 78.34, 79.07, 78.94, 79.04], "fill": false}, {"label": "Benqi", "borderColor": "#1cc0e0", "backgroundColor": "#1cc0e018", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [79.38, 79.86, 79.63, 79.65, 79.85, 79.77, 83.68, 82.88, 82.22, 82.88, 83.15, 84.16, 80.22, 81.77, 82.51, 82.61, 84.29, 86.35, 87.1, 86.75, 85.31, 86.86, 87.34, 88.46, 89.71, 83.81, 84.74, 86.09, 86.25, 86.47, 83.03, 82.09, 82.4, 80.52, 81.45, 84.18, 85.18, 85.04, 85.18, 85.47, 78.26, 89.66, 81.77, 80.46, 77.03, 77.87, 78.6, 73.15, 73.73, 71.19, 71.45, 62.68, 64.45, 64.03, 64.93, 66.43, 66.36, 67.72, 62.8, 63.14, 68.8, 69.06, 68.23, 68.75, 69.85, 69.68, 69.34, 64.9, 67.02, 67.82, 67.8, 68.58, 68.62, 70.64, 69.88, 72.35, 74.09, 74.28, 74.56, 81.47, 75.7, 76.21, 75.38, 74.95, 75.09, 74.69, 73.1, 72.84, 74.58, 76.68, 77.05], "fill": false}, {"label": "Spark", "borderColor": "#f5ac37", "backgroundColor": "#f5ac3718", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fill": false}, {"label": "Euler (9Summits)", "borderColor": "#e84142", "backgroundColor": "#e8414218", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fill": false}, {"label": "Silo (savUSD/USDC)", "borderColor": "#3fb950", "backgroundColor": "#3fb95018", "borderDash": [5, 5], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 92.16, 85.96, 78.94, 76.48, 100.0, 92.59, 91.04, 91.13, 91.22, 99.91, 93.77, 97.34, 88.65, 84.55, 83.73, 84.6, 76.69, 79.27, 76.47, 73.93, null, null, null, null, 75.22, null, null, null, null, null, 74.39, 71.79, 74.72, 82.08, 79.23, 81.26, 95.62, 77.05, 72.75, 77.94, 74.82, 76.0, 76.06, 76.19, 76.92, 72.4, 73.81, 71.2, 73.0, 72.03, 70.13, 67.3, 66.68, 67.46, 70.9], "fill": false}, {"label": "Silo (sUSDp/USDC)", "borderColor": "#58a6ff", "backgroundColor": "#58a6ff18", "borderDash": [5, 5], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 79.81, 79.81, null, null, null, null, 58.43, null, null, null, null, null, 78.07, 77.97, 77.79, 77.71, 79.79, 79.73, 75.08, 75.02, 69.18, 72.26, 72.14, 72.88, 72.56, 72.24, 71.66, 73.89, 71.99, 71.94, 70.28, 70.14, 68.76, 75.7, 70.76, 70.61, 66.32], "fill": false}] },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            tooltip: { callbacks: { label: ctx => ctx.parsed.y != null ? ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + '%' : null } },
+            legend: legendOpts
+        },
+        scales: {
+            y: { title: { display: true, text: 'Utilization (%)' }, ticks: { callback: v => v + '%' }, grid: { color: GRID }, min: 0, max: 100 },
+            x: { ticks: { maxTicksLimit: 15, maxRotation: 45 }, grid: { display: false } }
+        }
+    }
+});
+
+new Chart(document.getElementById('borrowApyChart'), {
+    type: 'line',
+    data: { labels, datasets: [{"label": "Aave V3", "borderColor": "#9b7ddb", "backgroundColor": "#9b7ddb18", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [4.7208, 4.7458, 4.9939, 4.981, 5.0265, 4.999, 5.0146, 5.0209, 5.0595, 5.0191, 5.0123, 5.0605, 4.9343, 4.8582, 4.7563, 4.7899, 4.6048, 4.6344, 4.5614, 4.5908, 4.6473, 4.6457, 4.7, 4.9813, 4.9623, 4.8719, 4.8777, 4.887, 4.8514, 4.7825, 4.784, 4.9383, 4.8855, 4.9092, 4.9639, 4.9647, 4.9116, 4.8344, 4.8513, 4.9129, 4.6996, 4.8061, 4.1128, 4.1151, 4.039, 4.0567, 4.0136, 3.9379, 3.9726, 3.976, 4.0021, 4.0948, 4.1085, 4.1157, 4.102, 4.0757, 4.0842, 4.0675, 3.9621, 3.942, 3.9373, 3.9164, 3.8272, 3.8497, 3.8062, 3.8119, 3.7669, 3.7216, 3.6794, 3.6746, 3.6479, 3.6648, 3.6812, 3.6665, 3.722, 3.7006, 3.6897, 2.9602, 2.9627, 2.9823, 3.142, 3.1482, 3.1949, 3.2086, 3.1648, 3.175, 3.3107, 3.4816, 3.5142, 3.5082, 3.513], "fill": false}, {"label": "Benqi", "borderColor": "#1cc0e0", "backgroundColor": "#1cc0e018", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [6.3618, 6.4013, 6.3821, 6.384, 6.4, 6.3939, 6.7173, 6.6514, 6.5965, 6.6513, 6.6731, 6.7573, 6.4306, 6.5595, 6.62, 6.6284, 6.7677, 6.9392, 7.001, 6.9725, 6.8528, 6.9809, 7.0209, 7.114, 7.2185, 6.7282, 6.805, 6.9172, 6.9303, 6.9491, 6.6632, 6.5857, 6.6113, 6.4555, 6.5326, 6.7585, 6.8419, 6.8306, 6.8414, 6.8655, 6.2692, 7.2141, 6.559, 6.4503, 6.1677, 6.2364, 6.297, 5.8477, 5.8953, 5.6867, 5.708, 4.9902, 5.135, 5.1005, 5.174, 5.2965, 5.291, 5.4026, 5.0002, 5.0282, 5.4908, 5.5124, 5.4439, 5.4868, 5.5772, 5.5627, 5.5353, 5.1717, 5.3446, 5.4101, 5.409, 5.473, 5.4761, 5.6417, 5.5791, 5.782, 5.925, 5.9412, 5.9639, 6.5342, 6.0581, 6.1001, 6.0314, 5.9958, 6.0077, 5.9748, 5.8435, 5.8228, 5.9656, 6.1389, 6.1688], "fill": false}, {"label": "Spark", "borderColor": "#f5ac37", "backgroundColor": "#f5ac3718", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fill": false}, {"label": "Euler (9Summits)", "borderColor": "#e84142", "backgroundColor": "#e8414218", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fill": false}, {"label": "Silo (savUSD/USDC)", "borderColor": "#3fb950", "backgroundColor": "#3fb95018", "borderDash": [5, 5], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 20.0912, 8.4096, 7.7229, 7.4818, 15.874, 9.7916, 8.9058, 8.9149, 8.9237, 16.4233, 17.338, 20.3504, 8.6721, 8.2712, 8.1905, 8.2759, 7.5021, 7.7546, 7.4811, 7.2318, null, null, null, null, 7.3582, null, null, null, null, null, 7.2773, 7.0229, 7.3096, 8.0299, 7.7503, 7.9491, 10.0355, 7.5376, 7.1171, 7.625, 7.3198, 7.435, 7.4405, 7.4533, 7.5245, 7.0824, 7.2208, 6.9651, 7.141, 7.0468, 6.8605, 6.5835, 6.5231, 6.5997, 6.9359], "fill": false}, {"label": "Silo (sUSDp/USDC)", "borderColor": "#58a6ff", "backgroundColor": "#58a6ff18", "borderDash": [5, 5], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 5, 5, null, null, null, null, 5, null, null, null, null, null, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5], "fill": false}] },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            tooltip: { callbacks: { label: ctx => ctx.parsed.y != null ? ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(2) + '%' : null } },
+            legend: legendOpts
+        },
+        scales: {
+            y: { title: { display: true, text: 'Borrow APY (%)' }, ticks: { callback: v => v.toFixed(1) + '%' }, grid: { color: GRID }, beginAtZero: true },
+            x: { ticks: { maxTicksLimit: 15, maxRotation: 45 }, grid: { display: false } }
+        }
+    }
+});
+
+const tvlTooltip = { callbacks: { label: ctx => {
+    if (ctx.parsed.y == null) return null;
+    var v = ctx.parsed.y;
+    return ctx.dataset.label + ': $' + (v >= 1e6 ? (v/1e6).toFixed(1) + 'M' : (v/1e3).toFixed(0) + 'K');
+} } };
+const tvlTick = { callback: v => v >= 1e6 ? '$' + (v/1e6).toFixed(0) + 'M' : '$' + (v/1e3).toFixed(0) + 'K' };
+
+new Chart(document.getElementById('supplyChart'), {
+    type: 'line',
+    data: { labels, datasets: [{"label": "Aave V3", "borderColor": "#9b7ddb", "backgroundColor": "#9b7ddb22", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [148388833, 147672435, 140678085, 140043631, 140830533, 140312538, 139377416, 139700136, 138650764, 140268765, 140185107, 139042225, 139115942, 139846058, 142051252, 141244949, 133708910, 133764820, 134560638, 133441586, 132670107, 132690873, 131796628, 124390207, 124518708, 126356788, 125544893, 125427113, 127535995, 127851113, 128056322, 123491421, 124889209, 124375378, 124176993, 124327971, 125082967, 126966279, 127081722, 125373551, 124136879, 120975617, 118580881, 116456145, 119611610, 115563787, 113799909, 111156051, 108047328, 108450539, 107522871, 105265445, 104654500, 104447675, 104786487, 104890019, 104806300, 105006579, 105515366, 106113399, 105457139, 105942241, 105348279, 105320743, 105401161, 105406311, 105433356, 105459960, 105397295, 105181768, 106079176, 105793031, 105173158, 104416867, 103303085, 103958827, 104109195, 103948099, 103930405, 104478357, 101667331, 101574413, 100743455, 101089854, 100961450, 100668008, 101016836, 100821572, 100794443, 100908679, 100673160], "fill": true}, {"label": "Benqi", "borderColor": "#1cc0e0", "backgroundColor": "#1cc0e022", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [37909354, 37704100, 37728397, 37843163, 37777749, 37799290, 36721189, 37039082, 37349033, 37423359, 37480435, 37028813, 38521893, 37213035, 37204600, 37833595, 36939596, 36135450, 36068194, 36405995, 37186951, 36551639, 36525416, 36329098, 36604032, 38218929, 38242993, 38299131, 38246857, 38289377, 38097986, 38147832, 38134435, 38125040, 38107096, 36900886, 36400059, 36442044, 36535100, 36438634, 37135925, 31681525, 32380607, 32656786, 32729026, 32105186, 31842808, 30629898, 30257656, 30544532, 30530424, 29747762, 29056569, 29069343, 28629093, 27732261, 27851973, 27408568, 26922998, 26791749, 24888824, 24829334, 24994049, 24950928, 24618391, 24620480, 24653374, 25867851, 25275813, 25082905, 25034481, 24978320, 24763333, 24125891, 24157849, 24157822, 24146067, 24114663, 24098788, 23892672, 24939643, 24649444, 24931796, 25166581, 25235305, 25118162, 25479504, 25505777, 25313796, 25134069, 25070093], "fill": true}, {"label": "Spark", "borderColor": "#f5ac37", "backgroundColor": "#f5ac3722", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fill": true}, {"label": "Euler (9Summits)", "borderColor": "#e84142", "backgroundColor": "#e8414222", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fill": true}, {"label": "Silo (savUSD/USDC)", "borderColor": "#3fb950", "backgroundColor": "#3fb95022", "borderDash": [5, 5], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 9893705, 11164047, 12982882, 13631030, 10316635, 10059462, 10007062, 9998235, 9993515, 9046200, 7934440, 6650997, 6795700, 7127156, 7200317, 6418904, 7082657, 6820757, 5794247, 5974511, null, null, null, null, 4181776, null, null, null, null, null, 5037137, 5218573, 5015051, 4582267, 4746811, 3570724, 3031178, 3631864, 3618598, 3410346, 3305734, 3255435, 3253746, 3248688, 3221021, 3420022, 3355133, 3479108, 3393975, 3193285, 3138051, 3270249, 3165624, 3124776, 2973523], "fill": true}, {"label": "Silo (sUSDp/USDC)", "borderColor": "#58a6ff", "backgroundColor": "#58a6ff22", "borderDash": [5, 5], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 296674, 296680, null, null, null, null, 929044, null, null, null, null, null, 2173812, 2176906, 2182279, 2185056, 2188328, 2190268, 2326352, 2328664, 1582950, 1515878, 1518288, 1521036, 1528019, 1534981, 1547706, 1501010, 1540978, 1542143, 1578891, 1582207, 1614291, 1466393, 1569078, 1572677, 1674278], "fill": true}] },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { tooltip: tvlTooltip, legend: { display: false } },
+        scales: {
+            y: { ticks: tvlTick, grid: { color: GRID } },
+            x: { ticks: { maxTicksLimit: 10, maxRotation: 45 }, grid: { display: false } }
+        }
+    }
+});
+
+new Chart(document.getElementById('borrowChart'), {
+    type: 'line',
+    data: { labels, datasets: [{"label": "Aave V3", "borderColor": "#9b7ddb", "backgroundColor": "#9b7ddb22", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [114631763, 114681050, 114961680, 114147834, 115837634, 114779764, 114369411, 114777900, 114792798, 115205336, 114979185, 115139748, 112327462, 111175781, 110560621, 110708846, 110827005, 111585575, 110482679, 110269677, 110980742, 110959599, 111499829, 111534234, 111221826, 110807048, 110226940, 110333240, 111372395, 110062462, 110272879, 109771675, 109827349, 109904591, 110953216, 111106039, 110583943, 110486362, 110972305, 110871554, 105011404, 104657305, 87786597, 86262542, 86962575, 84387742, 82216577, 78791672, 77262527, 77617493, 77458410, 77588254, 77395939, 77379224, 77371490, 76950929, 77049966, 76882118, 75252917, 75294451, 74740544, 74685774, 72576053, 72983451, 72213263, 72326067, 71490635, 70649154, 69805575, 69571807, 69656480, 69789720, 69691767, 68913653, 69210896, 69248991, 69146127, 69235131, 69282277, 70109486, 71876335, 71952029, 72421821, 72981741, 71895572, 71915649, 75250220, 78981812, 79699105, 79652632, 79575824], "fill": true}, {"label": "Benqi", "borderColor": "#1cc0e0", "backgroundColor": "#1cc0e022", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [30093905, 30111183, 30043203, 30143082, 30164010, 30153447, 30728026, 30699664, 30708823, 31017601, 31163659, 31164048, 30901097, 30430955, 30695874, 31252865, 31135318, 31204165, 31414187, 31583482, 31725412, 31747031, 31899834, 32135213, 32838002, 32031755, 32405974, 32971061, 32986307, 33109704, 31631653, 31316105, 31423062, 30697434, 31038032, 31061980, 31006292, 30992126, 31118781, 31142790, 29063626, 28405015, 26477155, 26274065, 25212164, 24998865, 25028337, 22405103, 22307790, 21743999, 21813065, 18645071, 18727154, 18612547, 18588533, 18421685, 18482518, 18562076, 16907448, 16916987, 17123414, 17148042, 17052758, 17154183, 17196720, 17154895, 17095374, 16788262, 16938614, 17010066, 16973804, 17130669, 16992679, 17042438, 16880662, 17477658, 17889087, 17913245, 17968121, 19465010, 18880059, 18786012, 18793371, 18861622, 18949506, 18761378, 18624523, 18579409, 18878996, 19273770, 19315527], "fill": true}, {"label": "Spark", "borderColor": "#f5ac37", "backgroundColor": "#f5ac3722", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, null, null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fill": true}, {"label": "Euler (9Summits)", "borderColor": "#e84142", "backgroundColor": "#e8414222", "borderDash": [], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "fill": true}, {"label": "Silo (savUSD/USDC)", "borderColor": "#3fb950", "backgroundColor": "#3fb95022", "borderDash": [5, 5], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 9117939, 9597141, 10249310, 10425165, 10316634, 9313887, 9110115, 9111453, 9116061, 9038040, 7440065, 6474362, 6024259, 6026008, 6028487, 5430272, 5431562, 5406775, 4431079, 4416673, null, null, null, null, 3145421, null, null, null, null, null, 3747125, 3746417, 3747248, 3761285, 3760677, 2901494, 2898298, 2798402, 2632640, 2658190, 2473508, 2474216, 2474740, 2475148, 2477510, 2476029, 2476523, 2477079, 2477499, 2300253, 2200686, 2200804, 2110864, 2108092, 2108225], "fill": true}, {"label": "Silo (sUSDp/USDC)", "borderColor": "#58a6ff", "backgroundColor": "#58a6ff22", "borderDash": [5, 5], "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true, "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 236762, 236768, null, null, null, null, 542806, null, null, null, null, null, 1697179, 1697266, 1697591, 1697920, 1746055, 1746287, 1746533, 1746976, 1095154, 1095320, 1095360, 1108603, 1108773, 1108873, 1109036, 1109127, 1109285, 1109457, 1109576, 1109837, 1109985, 1110063, 1110339, 1110413, 1110455], "fill": true}] },
+    options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { tooltip: tvlTooltip, legend: { display: false } },
+        scales: {
+            y: { ticks: tvlTick, grid: { color: GRID } },
+            x: { ticks: { maxTicksLimit: 10, maxRotation: 45 }, grid: { display: false } }
+        }
+    }
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snow Mind — USDC Lending APY Comparison (Avalanche)</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root {
+    --bg: #0d1117; --card: #161b22; --border: #30363d;
+    --text: #e6edf3; --text2: #8b949e; --accent: #58a6ff;
+    --avax: #e84142; --green: #3fb950; --yellow: #d29922;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+}
+.container { max-width: 1280px; margin: 0 auto; padding: 24px; }
+
+header { text-align: center; padding: 40px 24px 28px; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+header h1 { font-size: 1.8rem; margin-bottom: 4px; }
+header h1 span { color: var(--avax); }
+header .sub { color: var(--text2); font-size: 1rem; }
+header .ts { color: var(--text2); font-size: 0.8rem; margin-top: 10px; opacity: 0.7; }
+
+.kpi-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px; margin-bottom: 32px;
+}
+.kpi {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 18px; text-align: center;
+}
+.kpi .k-label { font-size: 0.75rem; color: var(--text2); text-transform: uppercase; letter-spacing: 0.04em; }
+.kpi .k-val { font-size: 1.5rem; font-weight: 700; margin-top: 4px; }
+
+section {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 24px; margin-bottom: 24px;
+}
+section h2 { font-size: 1.2rem; margin-bottom: 6px; }
+section .insight {
+    color: var(--text2); font-size: 0.88rem; margin-bottom: 18px;
+    border-left: 3px solid var(--avax); padding-left: 12px;
+}
+
+.chart-wrap { position: relative; width: 100%; }
+.chart-wrap canvas { width: 100% !important; }
+
+table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+th { color: var(--text2); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.highlight { font-weight: 700; color: var(--green); font-size: 0.95rem; }
+td.tag { color: var(--text2); font-size: 0.78rem; font-style: italic; max-width: 200px; }
+tr:hover { background: rgba(88,166,255,0.04); }
+
+.legend-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px; margin-bottom: 20px;
+}
+.legend-item {
+    display: flex; align-items: center; gap: 10px; padding: 8px 12px;
+    background: rgba(255,255,255,0.02); border-radius: 6px;
+}
+.legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+.legend-name { font-weight: 600; font-size: 0.9rem; }
+.legend-tag { color: var(--text2); font-size: 0.78rem; }
+
+.note { color: var(--text2); font-size: 0.82rem; margin-top: 14px; font-style: italic; }
+
+footer {
+    text-align: center; padding: 28px; color: var(--text2); font-size: 0.78rem;
+}
+footer a { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+    <h1>USDC Lending <span>APY Comparison</span> — Avalanche</h1>
+    <p class="sub">Snow Mind target markets &middot; 90-day historical view</p>
+    <p class="ts">Data from DefiLlama &middot; 2026-03-20 12:04 UTC</p>
+</header>
+
+<!-- KPI Cards -->
+<div class="kpi-grid">
+    <div class="kpi">
+        <div class="k-label">Highest Current APY</div>
+        <div class="k-val" style="color:var(--green)">6.66%</div>
+        <div class="k-label" style="margin-top:4px">Euler (9Summits)</div>
+    </div>
+    <div class="kpi">
+        <div class="k-label">Lowest Current APY</div>
+        <div class="k-val" style="color:var(--yellow)">2.50%</div>
+        <div class="k-label" style="margin-top:4px">Aave V3</div>
+    </div>
+    <div class="kpi">
+        <div class="k-label">Current Spread</div>
+        <div class="k-val" style="color:var(--avax)">4.16%</div>
+        <div class="k-label" style="margin-top:4px">Best − Worst</div>
+    </div>
+    <div class="kpi">
+        <div class="k-label">Markets Tracked</div>
+        <div class="k-val" style="color:var(--accent)">6</div>
+        <div class="k-label" style="margin-top:4px">USDC lending</div>
+    </div>
+    <div class="kpi">
+        <div class="k-label">Combined TVL</div>
+        <div class="k-val">$146.38M</div>
+        <div class="k-label" style="margin-top:4px">Across 6 markets</div>
+    </div>
+</div>
+
+<!-- Legend -->
+<div class="legend-grid">
+<div class="legend-item">
+    <div class="legend-dot" style="background:#9b7ddb"></div>
+    <div><div class="legend-name">Aave V3</div><div class="legend-tag">Blue chip conservative</div></div>
+</div><div class="legend-item">
+    <div class="legend-dot" style="background:#1cc0e0"></div>
+    <div><div class="legend-name">Benqi</div><div class="legend-tag">Avalanche native conservative</div></div>
+</div><div class="legend-item">
+    <div class="legend-dot" style="background:#f5ac37"></div>
+    <div><div class="legend-name">Spark</div><div class="legend-tag">Base-layer parking</div></div>
+</div><div class="legend-item">
+    <div class="legend-dot" style="background:#e84142"></div>
+    <div><div class="legend-name">Euler (9Summits)</div><div class="legend-tag">Curated vault, higher yield</div></div>
+</div><div class="legend-item">
+    <div class="legend-dot" style="background:#3fb950"></div>
+    <div><div class="legend-name">Silo (savUSD/USDC)</div><div class="legend-tag">Isolated lending, Avant collateral</div></div>
+</div><div class="legend-item">
+    <div class="legend-dot" style="background:#58a6ff"></div>
+    <div><div class="legend-name">Silo (sUSDp/USDC)</div><div class="legend-tag">Isolated lending, Parallel collateral</div></div>
+</div>
+</div>
+
+<!-- APY Chart -->
+<section>
+    <h2>APY Comparison — Last 90 Days</h2>
+    <p class="insight">This chart shows the lending APY (supply rate) for USDC across all 6 target markets.
+    The spread between the highest and lowest APY at any point in time represents the optimisation
+    opportunity — capital rebalancing by Snow Mind captures this differential.</p>
+    <div class="chart-wrap" style="height:420px"><canvas id="apyChart"></canvas></div>
+    <p class="note">APY = base lending rate + any reward incentives. Gaps indicate the pool did not
+    yet exist or had no data for that date.</p>
+</section>
+
+<!-- TVL Chart -->
+<section>
+    <h2>TVL Comparison — Last 90 Days</h2>
+    <p class="insight">TVL shows how much capital is deposited in each market. Larger TVL generally
+    means more stable rates but lower APY. Smaller pools may offer higher yields but with more
+    volatility — exactly the tradeoff Snow Mind navigates.</p>
+    <div class="chart-wrap" style="height:360px"><canvas id="tvlChart"></canvas></div>
+</section>
+
+<!-- Data Table -->
+<section>
+    <h2>Market Summary</h2>
+    <p class="insight">Current rates, averages, and volatility across all 6 markets. APY Volatility
+    (standard deviation over 30 days) indicates rate stability — lower is more predictable.</p>
+    <div style="overflow-x:auto">
+    <table>
+        <thead><tr>
+            <th>Market</th><th>Strategy</th><th>APY Now</th><th>7d Avg</th>
+            <th>30d Avg</th><th>30d Vol</th><th>Base APY</th><th>Reward APY</th><th>TVL</th>
+        </tr></thead>
+        <tbody><tr>
+            <td><span style="color:#e84142">●</span> Euler (9Summits)</td>
+            <td class="tag">Curated vault, higher yield</td>
+            <td class="num highlight">6.66%</td>
+            <td class="num">8.29%</td>
+            <td class="num">6.81%</td>
+            <td class="num">2.11%</td>
+            <td class="num">6.66%</td>
+            <td class="num">—</td>
+            <td class="num">$4.06M</td>
+        </tr>
+<tr>
+            <td><span style="color:#3fb950">●</span> Silo (savUSD/USDC)</td>
+            <td class="tag">Isolated lending, Avant collateral</td>
+            <td class="num highlight">4.04%</td>
+            <td class="num">4.22%</td>
+            <td class="num">4.97%</td>
+            <td class="num">0.91%</td>
+            <td class="num">4.04%</td>
+            <td class="num">—</td>
+            <td class="num">$1.00M</td>
+        </tr>
+<tr>
+            <td><span style="color:#1cc0e0">●</span> Benqi</td>
+            <td class="tag">Avalanche native conservative</td>
+            <td class="num highlight">3.98%</td>
+            <td class="num">3.77%</td>
+            <td class="num">3.50%</td>
+            <td class="num">0.37%</td>
+            <td class="num">3.98%</td>
+            <td class="num">—</td>
+            <td class="num">$5.80M</td>
+        </tr>
+<tr>
+            <td><span style="color:#f5ac37">●</span> Spark</td>
+            <td class="tag">Base-layer parking</td>
+            <td class="num highlight">3.75%</td>
+            <td class="num">3.75%</td>
+            <td class="num">3.88%</td>
+            <td class="num">0.12%</td>
+            <td class="num">3.75%</td>
+            <td class="num">—</td>
+            <td class="num">$113.96M</td>
+        </tr>
+<tr>
+            <td><span style="color:#58a6ff">●</span> Silo (sUSDp/USDC)</td>
+            <td class="tag">Isolated lending, Parallel collateral</td>
+            <td class="num highlight">3.17%</td>
+            <td class="num">3.19%</td>
+            <td class="num">3.31%</td>
+            <td class="num">0.15%</td>
+            <td class="num">3.17%</td>
+            <td class="num">—</td>
+            <td class="num">$463.8K</td>
+        </tr>
+<tr>
+            <td><span style="color:#9b7ddb">●</span> Aave V3</td>
+            <td class="tag">Blue chip conservative</td>
+            <td class="num highlight">2.50%</td>
+            <td class="num">2.32%</td>
+            <td class="num">2.20%</td>
+            <td class="num">0.20%</td>
+            <td class="num">2.50%</td>
+            <td class="num">—</td>
+            <td class="num">$21.09M</td>
+        </tr>
+</tbody>
+    </table>
+    </div>
+</section>
+
+</div>
+
+<footer>
+    Snow Mind Market Research &middot; Data from <a href="https://defillama.com">DefiLlama</a>
+    &middot; Generated 2026-03-20 12:04 UTC
+</footer>
+
+<script>
+const GRID = 'rgba(255,255,255,0.06)';
+const TICK = '#8b949e';
+Chart.defaults.color = TICK;
+Chart.defaults.borderColor = GRID;
+
+const labels = ["12-20", "12-21", "12-22", "12-23", "12-24", "12-25", "12-26", "12-27", "12-28", "12-29", "12-30", "12-31", "01-01", "01-02", "01-03", "01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10", "01-11", "01-12", "01-13", "01-14", "01-15", "01-16", "01-17", "01-18", "01-19", "01-20", "01-21", "01-22", "01-23", "01-24", "01-25", "01-26", "01-27", "01-28", "01-29", "01-30", "01-31", "02-01", "02-02", "02-03", "02-04", "02-05", "02-06", "02-07", "02-08", "02-09", "02-10", "02-11", "02-12", "02-13", "02-14", "02-15", "02-16", "02-17", "02-18", "02-19", "02-20", "02-21", "02-22", "02-23", "02-24", "02-25", "02-26", "02-27", "02-28", "03-01", "03-02", "03-03", "03-04", "03-05", "03-06", "03-07", "03-08", "03-09", "03-10", "03-11", "03-12", "03-13", "03-14", "03-15", "03-16", "03-17", "03-18", "03-19", "03-20"];
+
+new Chart(document.getElementById('apyChart'), {
+    type: 'line',
+    data: { labels, datasets: [{"label": "Aave V3", "data": [3.282, 3.3168, 3.6727, 3.6538, 3.7208, 3.6802, 3.7031, 3.7124, 3.7698, 3.7099, 3.6997, 3.7713, 3.5855, 3.4758, 3.3315, 3.3787, 3.4349, 3.4792, 3.3705, 3.4141, 3.4986, 3.4962, 3.5783, 4.0196, 3.9889, 3.8449, 3.8541, 3.8688, 3.8127, 3.7052, 3.7075, 3.9505, 3.8665, 3.904, 3.9915, 3.9928, 3.9078, 3.786, 3.8125, 3.9099, 3.5778, 3.7418, 2.7401, 2.7432, 2.6427, 2.6659, 2.6095, 2.512, 2.5564, 2.5608, 2.5945, 2.7161, 2.7343, 2.744, 2.7257, 2.6908, 2.7021, 2.6801, 2.543, 2.5172, 2.5112, 2.4846, 2.3728, 2.4007, 2.3467, 2.3538, 2.2986, 2.2437, 2.193, 2.1873, 2.1557, 2.1756, 2.1952, 2.1776, 2.2441, 2.2183, 2.2053, 1.7743, 1.7773, 1.801, 1.999, 2.0069, 2.0669, 2.0846, 2.0282, 2.0412, 2.2194, 2.4545, 2.5006, 2.492, 2.4991], "borderColor": "#9b7ddb", "backgroundColor": "#9b7ddb18", "borderDash": [], "fill": false, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true}, {"label": "Benqi", "data": [4.2496, 4.302, 4.2766, 4.279, 4.3003, 4.2922, 4.7329, 4.6414, 4.5658, 4.6412, 4.6715, 4.7889, 4.3412, 4.5152, 4.5981, 4.6096, 4.8036, 5.0479, 5.1373, 5.0959, 4.9241, 5.1082, 5.1663, 5.3031, 5.4588, 4.7482, 4.8562, 5.0161, 5.035, 5.0621, 4.6578, 4.551, 4.5862, 4.3745, 4.4786, 4.7907, 4.9086, 4.8924, 4.9077, 4.9422, 4.128, 5.4521, 4.5145, 4.3675, 3.9968, 4.0854, 4.1643, 3.5968, 3.6549, 3.4034, 3.4287, 2.6284, 2.7813, 2.7445, 2.8233, 2.957, 2.951, 3.0754, 2.6388, 2.6681, 3.1754, 3.2002, 3.122, 3.1709, 3.275, 3.2582, 3.2266, 2.8208, 3.0104, 3.0838, 3.0826, 3.1551, 3.1586, 3.3504, 3.2772, 3.5172, 3.6915, 3.7114, 3.7396, 4.4807, 3.8573, 3.9105, 3.8238, 3.7793, 3.7941, 3.7532, 3.5916, 3.5665, 3.7416, 3.9599, 3.9845], "borderColor": "#1cc0e0", "backgroundColor": "#1cc0e018", "borderDash": [], "fill": false, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true}, {"label": "Spark", "data": [null, null, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, null, null, null, null, null, 4, 4, 4, 4, 4, 4, 4, 3.75, 3.75, 3.75, 3.75, 3.75, 3.75, 3.75, 3.75, 3.75, 3.75, 3.75, 3.75], "borderColor": "#f5ac37", "backgroundColor": "#f5ac3718", "borderDash": [], "fill": false, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true}, {"label": "Euler (9Summits)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 5.2989, 5.3172, 5.7824, 5.7323, 10.697, 6.3817, 6.3354, 5.7801, 5.8315, 5.837, 5.4634, 5.7356, 5.5314, 5.5302, 5.535, 5.6395, 5.6112, 5.4455, 6.2378, 9.9109, 6.9703, 7.4067, 4.2508, 9.978, 4.1848, 4.1968, 7.8238, 4.2148, 7.8548, 12.4494, 10.182, 9.8535, 6.8052, 6.6636], "borderColor": "#e84142", "backgroundColor": "#e8414218", "borderDash": [], "fill": false, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true}, {"label": "Silo (savUSD/USDC)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 16.6643, 6.5064, 5.4871, 5.15, 14.2865, 8.1593, 7.2968, 7.3118, 7.3261, 14.7676, 14.632, 17.8291, 6.9189, 6.294, 6.1718, 6.3011, 5.1779, 5.5323, 5.149, 4.8115, null, null, null, null, 4.9812, null, null, null, null, null, 4.8722, 4.5376, 4.9155, 5.9321, 5.5262, 5.8134, 8.636, 5.2271, 4.6601, 5.349, 4.9293, 5.0857, 5.0932, 5.1107, 5.2088, 4.6148, 4.7969, 4.4631, 4.6914, 4.5685, 4.33, 3.9875, 3.9147, 4.0072, 4.0402], "borderColor": "#3fb950", "backgroundColor": "#3fb95018", "borderDash": [5, 5], "fill": false, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true}, {"label": "Silo (sUSDp/USDC)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 3.5913, 3.5914, null, null, null, null, 2.6292, null, null, null, null, null, 3.5133, 3.5085, 3.5006, 3.4968, 3.5905, 3.5878, 3.3784, 3.3759, 3.1133, 3.2515, 3.2465, 3.2798, 3.2653, 3.2508, 3.2246, 3.3251, 3.2394, 3.2374, 3.1624, 3.1565, 3.0942, 3.4065, 3.1844, 3.1773, 3.1744], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff18", "borderDash": [5, 5], "fill": false, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2.5, "spanGaps": true}] },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: ctx => {
+                        if (ctx.parsed.y == null) return null;
+                        return ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(2) + '%';
+                    }
+                }
+            },
+            legend: { display: true, position: 'top', labels: { usePointStyle: true, pointStyle: 'line', padding: 16 } }
+        },
+        scales: {
+            y: {
+                title: { display: true, text: 'APY (%)' },
+                ticks: { callback: v => v.toFixed(1) + '%' },
+                grid: { color: GRID },
+                beginAtZero: true,
+            },
+            x: {
+                ticks: { maxTicksLimit: 15, maxRotation: 45 },
+                grid: { display: false }
+            }
+        }
+    }
+});
+
+new Chart(document.getElementById('tvlChart'), {
+    type: 'line',
+    data: { labels, datasets: [{"label": "Aave V3", "data": [33757070, 32991386, 25716405, 25895797, 24992899, 25532774, 25008005, 24922236, 23857966, 25063429, 25205922, 23902477, 26788480, 28670276, 31490631, 30536102, 22881905, 22179245, 24077959, 23171909, 21689365, 21731274, 20296799, 12855973, 13296881, 15549740, 15317954, 15093873, 16163600, 17788650, 17783444, 13719746, 15061860, 14470786, 13223778, 13221932, 14499024, 16479917, 16109417, 14501997, 19125476, 16318312, 30794285, 30193604, 32649034, 31176045, 31583331, 32364380, 30784801, 30833045, 30064461, 27677191, 27258561, 27068451, 27414998, 27939090, 27756334, 28124461, 30262449, 30818947, 30716595, 31256466, 32772226, 32337292, 33187898, 33080244, 33942721, 34810806, 35591719, 35609961, 36422695, 36003311, 35481390, 35503214, 34092189, 34709836, 34963068, 34712969, 34648128, 34368871, 29790996, 29622385, 28321634, 28108113, 29065878, 28752359, 25766616, 21839760, 21095338, 21256047, 21093014], "borderColor": "#9b7ddb", "backgroundColor": "#9b7ddb22", "borderDash": [], "fill": true, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true}, {"label": "Benqi", "data": [7815449, 7592917, 7685194, 7700081, 7613739, 7645843, 5993163, 6339419, 6640211, 6405757, 6316776, 5864765, 7620796, 6782081, 6508726, 6580729, 5804278, 4931285, 4654007, 4822512, 5461538, 4804608, 4625582, 4193885, 3766030, 6187174, 5837020, 5328070, 5260550, 5179673, 6466333, 6831727, 6711373, 7427606, 7069063, 5838906, 5393767, 5449918, 5416318, 5295844, 8072300, 3276510, 5903453, 6382721, 7516862, 7106321, 6814470, 8224795, 7949866, 8800533, 8717359, 11102691, 10329415, 10456796, 10040560, 9310576, 9369455, 8846492, 10015550, 9874762, 7765410, 7681293, 7941291, 7796744, 7421671, 7465584, 7558000, 9079590, 8337199, 8072839, 8060677, 7847652, 7770654, 7083453, 7277186, 6680165, 6256980, 6201418, 6130667, 4427662, 6059584, 5863431, 6138425, 6304959, 6285800, 6356784, 6854981, 6926367, 6434800, 5860299, 5796401], "borderColor": "#1cc0e0", "backgroundColor": "#1cc0e022", "borderDash": [], "fill": true, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true}, {"label": "Spark", "data": [null, null, 213007259, 221277806, 204724788, 202797206, 201439895, 198695784, 197777912, 194666227, 192077045, 190400075, 187677109, 196973568, 198033781, 197017623, 197907418, 201126598, 196484663, 201045086, 203248276, 202729526, 201942049, 205998905, 207045816, 210499300, 215942597, 215151750, 214794978, 219286053, 218441984, 214206367, 216695898, 214005372, 177266559, 177654703, 168900443, 167310352, 166037249, 164117017, 158366805, 149555330, 105627854, 94418313, 94832213, 104943366, 99096199, 99296697, 108798872, 112627630, 113182236, 114072465, 122525807, 130628783, 129543377, 132298248, 134574313, 137092734, 139673525, 139639789, 146085981, 145727905, 145549383, 147382087, 151579730, 151630492, 151979908, null, null, null, null, null, 144650951, 103124637, 105520712, 181696669, 182430907, 182875175, 185980752, 189552208, 163025869, 141761037, 141695991, 140305991, 136656407, 135947333, 132856775, 126700947, 117532447, 114306946, 113959138], "borderColor": "#f5ac37", "backgroundColor": "#f5ac3722", "borderDash": [], "fill": true, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true}, {"label": "Euler (9Summits)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 7447124, 7448863, 6606313, 6606658, 5392075, 5462814, 5463019, 5537615, 5477954, 5477402, 5426276, 5034456, 5035596, 5185827, 5186143, 5082333, 5085733, 5140338, 4484016, 4297517, 4298630, 4279457, 4267427, 4268063, 4247666, 4248468, 4245486, 4319436, 4320105, 4052318, 4012072, 3993297, 4061161, 4061257], "borderColor": "#e84142", "backgroundColor": "#e8414222", "borderDash": [], "fill": true, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true}, {"label": "Silo (savUSD/USDC)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 790158, 1581676, 2748560, 3221062, 15445, 745703, 897297, 887359, 878295, 9268, 495903, 178455, 773483, 1103328, 1174151, 991090, 1653670, 1416672, 1365966, 1560684, null, null, null, null, 1039576, null, null, null, null, null, 1293661, 1475876, 1271598, 824855, 986139, 669326, 133039, 833687, 986240, 752488, 832611, 781655, 779491, 774077, 744098, 944630, 879295, 1002763, 917258, 893859, 938236, 1070355, 1055709, 1017672, 1004982], "borderColor": "#3fb950", "backgroundColor": "#3fb95022", "borderDash": [5, 5], "fill": true, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true}, {"label": "Silo (sUSDp/USDC)", "data": [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 59911, 59913, null, null, null, null, 386262, null, null, null, null, null, 476802, 479833, 484903, 487376, 442275, 444006, 579868, 581761, 487890, 420667, 423051, 412571, 419400, 426278, 438854, 392083, 431908, 432916, 469559, 472631, 504582, 356621, 459045, 462586, 464075], "borderColor": "#58a6ff", "backgroundColor": "#58a6ff22", "borderDash": [5, 5], "fill": true, "tension": 0.3, "pointRadius": 0, "pointHoverRadius": 5, "borderWidth": 2, "spanGaps": true}] },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: ctx => {
+                        if (ctx.parsed.y == null) return null;
+                        var v = ctx.parsed.y;
+                        if (v >= 1e6) return ctx.dataset.label + ': $' + (v/1e6).toFixed(1) + 'M';
+                        if (v >= 1e3) return ctx.dataset.label + ': $' + (v/1e3).toFixed(0) + 'K';
+                        return ctx.dataset.label + ': $' + v.toFixed(0);
+                    }
+                }
+            },
+            legend: { display: true, position: 'top', labels: { usePointStyle: true, pointStyle: 'line', padding: 16 } }
+        },
+        scales: {
+            y: {
+                title: { display: true, text: 'TVL (USD)' },
+                ticks: { callback: v => v >= 1e6 ? '$' + (v/1e6).toFixed(0) + 'M' : '$' + (v/1e3).toFixed(0) + 'K' },
+                grid: { color: GRID },
+            },
+            x: {
+                ticks: { maxTicksLimit: 15, maxRotation: 45 },
+                grid: { display: false }
+            }
+        }
+    }
+});
+</script>
+</body>
+</html>

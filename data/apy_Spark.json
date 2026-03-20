@@ -1,0 +1,758 @@
+[
+  {
+    "timestamp": "2025-12-22T23:01:45.461Z",
+    "tvlUsd": 213007259,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-23T23:01:37.434Z",
+    "tvlUsd": 221277806,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-24T23:01:45.111Z",
+    "tvlUsd": 204724788,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-25T23:02:42.798Z",
+    "tvlUsd": 202797206,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-26T23:01:42.834Z",
+    "tvlUsd": 201439895,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-27T23:01:43.858Z",
+    "tvlUsd": 198695784,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-28T23:02:08.835Z",
+    "tvlUsd": 197777912,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-29T23:01:50.670Z",
+    "tvlUsd": 194666227,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-30T23:01:35.349Z",
+    "tvlUsd": 192077045,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2025-12-31T23:01:38.599Z",
+    "tvlUsd": 190400075,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-01T23:01:39.332Z",
+    "tvlUsd": 187677109,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-02T23:01:47.195Z",
+    "tvlUsd": 196973568,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-03T23:01:37.029Z",
+    "tvlUsd": 198033781,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-04T23:01:44.968Z",
+    "tvlUsd": 197017623,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-05T23:02:21.527Z",
+    "tvlUsd": 197907418,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-06T23:01:50.540Z",
+    "tvlUsd": 201126598,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-07T23:01:49.188Z",
+    "tvlUsd": 196484663,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-08T23:01:49.859Z",
+    "tvlUsd": 201045086,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-09T23:01:50.853Z",
+    "tvlUsd": 203248276,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-10T23:01:38.667Z",
+    "tvlUsd": 202729526,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-11T23:01:36.300Z",
+    "tvlUsd": 201942049,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-12T23:02:25.930Z",
+    "tvlUsd": 205998905,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-13T23:01:36.229Z",
+    "tvlUsd": 207045816,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-14T23:01:39.838Z",
+    "tvlUsd": 210499300,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-15T23:01:44.344Z",
+    "tvlUsd": 215942597,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-16T23:02:08.053Z",
+    "tvlUsd": 215151750,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-17T23:01:46.471Z",
+    "tvlUsd": 214794978,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-18T23:01:38.727Z",
+    "tvlUsd": 219286053,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-19T23:01:32.822Z",
+    "tvlUsd": 218441984,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-20T23:01:59.953Z",
+    "tvlUsd": 214206367,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-21T23:01:39.697Z",
+    "tvlUsd": 216695898,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-22T23:02:07.986Z",
+    "tvlUsd": 214005372,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-23T23:06:48.594Z",
+    "tvlUsd": 177266559,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-24T23:02:05.545Z",
+    "tvlUsd": 177654703,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-25T23:02:16.320Z",
+    "tvlUsd": 168900443,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-26T23:01:47.375Z",
+    "tvlUsd": 167310352,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-27T23:01:54.285Z",
+    "tvlUsd": 166037249,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-28T23:01:51.207Z",
+    "tvlUsd": 164117017,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-29T23:01:45.090Z",
+    "tvlUsd": 158366805,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-30T23:01:38.362Z",
+    "tvlUsd": 149555330,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-01-31T23:01:47.555Z",
+    "tvlUsd": 105627854,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-01T23:01:45.358Z",
+    "tvlUsd": 94418313,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-02T23:02:18.803Z",
+    "tvlUsd": 94832213,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-03T23:01:36.423Z",
+    "tvlUsd": 104943366,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-04T23:01:52.395Z",
+    "tvlUsd": 99096199,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-05T23:01:16.738Z",
+    "tvlUsd": 99296697,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-06T23:01:52.619Z",
+    "tvlUsd": 108798872,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-07T23:01:39.262Z",
+    "tvlUsd": 112627630,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-08T23:01:38.915Z",
+    "tvlUsd": 113182236,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-09T23:02:06.429Z",
+    "tvlUsd": 114072465,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-10T23:01:50.232Z",
+    "tvlUsd": 122525807,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-11T23:02:02.889Z",
+    "tvlUsd": 130628783,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-12T23:01:46.545Z",
+    "tvlUsd": 129543377,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-13T23:01:42.524Z",
+    "tvlUsd": 132298248,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-14T23:01:49.896Z",
+    "tvlUsd": 134574313,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-15T23:01:53.191Z",
+    "tvlUsd": 137092734,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-16T23:01:44.022Z",
+    "tvlUsd": 139673525,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-17T23:01:40.218Z",
+    "tvlUsd": 139639789,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-18T23:01:42.839Z",
+    "tvlUsd": 146085981,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-19T23:01:25.310Z",
+    "tvlUsd": 145727905,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-20T23:01:52.063Z",
+    "tvlUsd": 145549383,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-21T23:01:31.361Z",
+    "tvlUsd": 147382087,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-22T23:01:42.634Z",
+    "tvlUsd": 151579730,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-23T23:01:41.601Z",
+    "tvlUsd": 151630492,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-02-24T08:01:42.864Z",
+    "tvlUsd": 151979908,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-02T23:02:10.580Z",
+    "tvlUsd": 144650951,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-03T23:02:19.050Z",
+    "tvlUsd": 103124637,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-04T23:02:03.090Z",
+    "tvlUsd": 105520712,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-05T23:03:13.116Z",
+    "tvlUsd": 181696669,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-06T23:01:59.627Z",
+    "tvlUsd": 182430907,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-07T23:01:36.972Z",
+    "tvlUsd": 182875175,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-08T23:01:31.805Z",
+    "tvlUsd": 185980752,
+    "apy": 4,
+    "apyBase": 4,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-09T23:03:37.761Z",
+    "tvlUsd": 189552208,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-10T23:01:53.378Z",
+    "tvlUsd": 163025869,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-11T23:01:29.891Z",
+    "tvlUsd": 141761037,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-12T23:03:28.002Z",
+    "tvlUsd": 141695991,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-13T23:02:39.160Z",
+    "tvlUsd": 140305991,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-14T23:02:05.943Z",
+    "tvlUsd": 136656407,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-15T23:02:27.827Z",
+    "tvlUsd": 135947333,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-16T23:02:29.945Z",
+    "tvlUsd": 132856775,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-17T23:01:43.669Z",
+    "tvlUsd": 126700947,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-18T23:01:44.168Z",
+    "tvlUsd": 117532447,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-19T23:01:53.209Z",
+    "tvlUsd": 114306946,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  },
+  {
+    "timestamp": "2026-03-20T11:01:52.269Z",
+    "tvlUsd": 113959138,
+    "apy": 3.75,
+    "apyBase": 3.75,
+    "apyReward": null,
+    "il7d": null,
+    "apyBase7d": null
+  }
+]
